@@ -21,3 +21,5 @@ int main(){
     printf("%d %d %d\n", a.arr[0],a.arr[1], a.val);
 
 }
+
+//Conclusion: You can pass an array by its value if it is inside a structure.
