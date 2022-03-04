@@ -136,11 +136,7 @@ int arr<T>::bs(T x){
 
 template <class T>
 void arr<T>::set(int x, T n){
-    if(x >= 0 && x <= length){
         A[x] = n;
-    }else{
-        cout << "Cannot set array!" << endl;
-    }
 }
 
 template <class T>

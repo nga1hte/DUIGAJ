@@ -6,6 +6,7 @@ class setOps : public arr<T>{
         setOps(int n);
         void Union(setOps a, setOps b);
         void Intersect(setOps a, setOps b);
+        void Difference(setOps a, setOps b);
 };
 
 
@@ -21,8 +22,7 @@ void setOps<T>::Union(setOps a, setOps b){
         if(a.gete(i) < b.gete(j)){
             arr<T>::set(k, a.gete(i));
             i++;
-            k++;
-        }else if(b.gete(j) < a.gete(i)){
+            k++; }else if(b.gete(j) < a.gete(i)){
             arr<T>::set(k, b.gete(j));
             j++;
             k++;
@@ -63,6 +63,29 @@ void setOps<T>::Intersect(setOps a, setOps b){
     arr<T>::setl(k);
 }
 
+template <class T>
+void setOps<T>::Difference(setOps a, setOps b){
+    int i = 0, j = 0, k = 0;
+    int l = a.getl(), m = b.getl();
+    while(i < l && j < m){
+        if(a.gete(i) < b.gete(j)){
+            arr<T>::set(k, a.gete(i));
+            i++;
+            k++;
+        }else if(b.gete(j) < a.gete(i)){
+            j++;
+        }else{
+            i++;
+            j++;
+        }
+    }
+    for(; i < l; i++){
+        arr<T>::set(k, a.gete(i));
+        k++;
+    }
+    arr<T>::setl(k);
+}
+
 
 
 int main(){
@@ -71,7 +94,7 @@ int main(){
     setOps<int> arr3(10);
     arr1.create();
     arr2.create();
-    arr3.Intersect(arr1, arr2);
+    arr3.Difference(arr1, arr2);
     arr3.display();
     return 0;
 }
