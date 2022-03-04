@@ -18,13 +18,15 @@ class arr{
         int search(T x);
         int bs(T x);
         int binarySearch(T x, int l, int h);
-        T get(int x);
+        T gete(int x);
+        int getl();
         void set(int x, T n);
         void reverse();
         void shift();
-        void rotate();
         void swap(T &a, T &b);
-        
+        void inSorted(T x);
+        bool isSorted();
+        void merge(arr a, arr b);
 };   
 
 template <class T>
@@ -132,10 +134,97 @@ int arr<T>::bs(T x){
     return binarySearch(x, 0, length);
 }
 
+template <class T>
+void arr<T>::set(int x, T n){
+    if(x >= 0 && x <= length){
+        A[x] = n;
+    }else{
+        cout << "Cannot set array!" << endl;
+    }
+}
+
+template <class T>
+void arr<T>::reverse(){
+    int i = 0, l = length - 1;
+    while(i < l){
+        swap(A[i], A[l]);
+        i++;
+        l--;
+    }
+}
+
+template <class T>
+void arr<T>::shift(){
+    //left shift
+    T temp = A[0];
+    for(int i = 0; i < length - 1; i++){
+        A[i] = A[i+1];
+    }
+    A[length-1] = temp;
+}
+
+template <class T>
+void arr<T>::inSorted(T x){
+    int l = length - 1;
+    while(A[l] > x){
+        A[l+1] = A[l]; 
+        l--;
+    }
+    A[l+1] = x;
+    length++;
+}
+
+template <class T>
+bool arr<T>::isSorted(){
+    for(int i = 0; i < length-1; i++){
+        if(A[i] > A[i+1])
+            return false;
+    }
+    return true;
+}
+
+template <class T>
+T arr<T>::gete(int x){
+    return A[x];
+}
+
+template <class T>
+int arr<T>::getl(){
+    return length;
+}
+
+template <class T>
+void arr<T>::merge(arr a, arr b){
+    int i = a.getl(), j = b.getl(), k = 0;
+    int l = 0, m = 0;
+    
+    while(l < i && m  < j){
+        if(a.gete(l) < b.gete(m)){
+            A[k++] = a.gete(l);
+            l++;
+        }else{
+            A[k++] = b.gete(m);
+            m++;
+        }
+    }
+    for(;l < i; l++)
+        A[k++] = a.gete(l);
+    for(;m < j; m++){
+        A[k++] = b.gete(m);
+    }
+    length = k;
+
+}
+
 int main(){
-    arr<int> Arr(10);
-    Arr.create();
-    Arr.display();
-    cout << Arr.bs(23) << endl;
+    arr<int> Arr1(10);
+    arr<int> Arr2(10);
+    arr<int> Arr3(15);
+    Arr1.create();
+    Arr2.create();
+    Arr1.display();
+    Arr2.display();
+    Arr3.merge(Arr1, Arr2);
+    Arr3.display();
     return 0;
 }
