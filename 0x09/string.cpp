@@ -164,13 +164,32 @@ void permutation(char *s, int k){
     }
 }
 
+void swap(char *a, char *b){
+    char t = *a;
+    *a = *b;
+    *b = t;
+}
+
+
+void perm(char *a, int l, int h){
+    if(l == h){
+        cout << a << endl;
+    }else{
+        for(int i = l; i <= h; i++){
+            swap(a[i], a[l]);
+            perm(a, l+1, h);
+            swap(a[i], a[l]);
+        }
+    }
+}
+
 
 int main(){
     char name[] = "thangsuan";
     char name2[] = "thrngsuan";
     cout << (palindrome(name) ? "Palindrome" : "Not Palindrome") << endl;
     checkAnagram2(name, name2);
-    char perm[] = "abc";
-    permutation(perm, 0);
+    char s[] = "cbd";
+    perm(s, 0, 2);
     return 0;
 }
