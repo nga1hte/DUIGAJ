@@ -103,13 +103,67 @@ char *infixToPostfix(char *s){
     }
     p[k] = '\0';
     return p;
+}
+
+int evaluatePostfix(char *s){
+    int i = 0;
+    stack op;
+    int a, b, res;
+    while(s[i] != '\0'){
+        if(isOperand(s[i]))
+            op.push(s[i] - 48);
+        else{
+            b = op.pop();
+            a = op.pop();
+
+            if(s[i] == '+')
+                res = a+b;
+            else if(s[i] == '-')
+                res = a-b;
+            else if(s[i] == '*')
+                res = a*b;
+            else if(s[i] == '/')
+                res = a/b;
+            op.push(res);
+        }
+        i++;
+    }
+    return op.stackTop();
+}
+
+char *infixToPrefix(char *s){
+    int i = 0;
+    int k = 0;
+    int len;
+
+    while(s[i] !='\0')
+        i++;
+    i--;
+    len = i;
+
+    char *rev = new char[i+1];
+    while(i >= 0)
+        rev[k++] = s[i--];
+    rev[k] = '\0';
+
+    char *p = infixToPostfix(rev);
+
+    i = len; k = 0;
+    while(i >= 0)
+        rev[k++] = p[i--];
+    rev[k] = '\0';
+
+    return rev;
 
 }
 
 int main(){
-    char s[] = "(a+b)*(c-d)^e^f";
+    char s[] = "3*5+6/2-4";
     char *p = infixToPostfix(s);
     cout << s << endl;
     cout << p << endl;
+    cout << evaluatePostfix(p) << endl;
+    char *i = infixToPrefix(s);
+    cout << i << endl;
     return 0;
 }
