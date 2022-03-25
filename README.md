@@ -1,2 +1,3 @@
 # DUIGAJ
 Data Structures and Agorithms
+Kinda messed up on my directories, was going for hex...
