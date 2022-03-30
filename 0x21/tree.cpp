@@ -60,7 +60,7 @@ void tree::createTree(){
     while(!q.empty()){
         p = q.front();
         q.pop();
-        cout << "Enter left child: ";
+        cout << "Enter left child of " << p->data << ": " << flush;
         cin >> data;
         if(data != -1){
             t = new node();
@@ -69,7 +69,7 @@ void tree::createTree(){
             p->left = t;
             q.push(t);
         }
-        cout << "Enter right child: ";
+        cout << "Enter left child of " << p->data << ": " << flush;
         cin >> data;
         if(data != -1){
             t = new node();
@@ -201,6 +201,6 @@ int tree::height(node *p){
         else
             return r +1;
     }
-    return 0;
+    return -1;
 }
 
