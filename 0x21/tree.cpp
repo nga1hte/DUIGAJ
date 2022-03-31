@@ -1,7 +1,6 @@
 #include <iostream>
 #include <queue>
 #include <stack>
-
 using namespace std;
 
 class node{
@@ -9,7 +8,15 @@ class node{
     int data;
     node *left;
     node *right;
+    node(){};
+    node(int data);
 };
+
+node::node(int data){
+    left = NULL;
+    right = NULL;
+    this->data = data;
+}
 
 class tree{
     public:
@@ -29,7 +36,19 @@ class tree{
     int count(node *p);
     int height(){return height(root);}
     int height(node *p);
+    int leafNodes(){return leafNodes(root);}
+    int leafNodes(node *p);
+    node *generateTree(int *inorder, int *preorder, int inStart, int inEnd);
 };
+
+int searchInOrder(int inArray[], int inStart, int inEnd, int data){
+    for(int i = inStart; i < inEnd; i++){
+        if(inArray[i] == data){
+            return i;
+        }
+    }
+    return -1;
+}
 
 int main(){
     tree t;
@@ -44,7 +63,17 @@ int main(){
     cout << endl;
     cout << "No. of nodes: " << t.count() << endl;
     cout << "Height: " << t.height() << endl;
+    cout << "leaf nodes: " << t.leafNodes() << endl;
+    int preorder[] = {4, 7, 9, 6, 3, 2, 5, 8, 1};
+    int inorder[] = {7, 6, 9, 3, 4, 5, 8, 2, 1};
+    node *g = t.generateTree(inorder, preorder, 0, sizeof(inorder)/sizeof(inorder[0])-1);
+    tree f;
+    f.root = g;
+    f.levelOrder();
+    cout << endl;
+
 }
+
 
 void tree::createTree(){
     node *p, *t;
@@ -199,8 +228,38 @@ int tree::height(node *p){
         if(l > r)
             return l + 1;
         else
-            return r +1;
+            return r + 1;
     }
     return -1;
 }
 
+int tree::leafNodes(node *p){
+    int x, y;
+    if(p != NULL){
+        x = leafNodes(p->left);
+        y = leafNodes(p->right);
+        if(p->left == NULL ^ p->right == NULL)
+            return x + y + 1;
+        else
+            return x + y;
+    }
+    return 0;
+}
+
+node* tree::generateTree(int *inorder, int *preorder, int inStart, int inEnd){
+    static int preIndex = 0;
+    if(inStart > inEnd)
+        return NULL;
+
+    node *n = new node(preorder[preIndex++]);
+
+    if(inStart == inEnd)
+        return n;
+
+    int splitIndex = searchInOrder(inorder, inStart, inEnd, n->data);
+
+    n->left = generateTree(inorder, preorder, inStart, splitIndex-1);
+    n->right = generateTree(inorder, preorder, splitIndex+1, inEnd);
+
+    return n;
+}
