@@ -22,6 +22,10 @@ class rbTree{
     node *lrRotate(node *p);
     node *rlRotate(node *p);
     int twoRed(node *p);
+    node *inOrderPre(node *p);
+    node *inOrderSucc(node *p);
+    int height(node *p);
+    node *deleteN(node *p, int key);
 };
 
 int main(){
@@ -37,7 +41,65 @@ int main(){
     a.insert(12);
     a.insert(2);
     a.display(a.root);
+    a.deleteN(a.root, 3);
+    cout << "After Deletion" << endl;
+    a.display(a.root);
     return 0;
+}
+
+node *rbTree::deleteN(node *p, int key){
+    node *q;
+    if(p == NULL)
+        return NULL;
+    if(p->left == NULL && p->right == NULL && p->data == key){
+        if(root == p)
+            root = NULL;
+        delete p;
+        return NULL;
+        
+    }
+
+    if(key < p->data)
+        p->left = deleteN(p->left, key);
+    else if(key > p->data)
+        p->right = deleteN(p->right, key);
+    else{
+        if(height(p->left) > height(p->right)){
+            q = inOrderPre(p->left);
+            p->data = q->data;
+            p->left = deleteN(p->left, q->data);
+        }else{
+            q = inOrderSucc(p->right);
+            p->data = q->data;
+            p->right = deleteN(p->right, q->data);
+        }
+    }
+    
+    return p;
+}
+
+int rbTree::height(node *p){
+    int x, y;
+    if(p == NULL)
+        return 0;
+    x = height(p->left);
+    y = height(p->right);
+    if(x > y)
+        return x + 1;
+    else 
+        return y + 1;
+}
+
+node *rbTree::inOrderPre(node *p){
+    if(p->right == NULL)
+        return p;
+    return inOrderPre(p->right);
+}
+
+node *rbTree::inOrderSucc(node *p){
+    if(p->left == NULL)
+        return p;
+    return inOrderSucc(p->left);
 }
 
 node *rbTree::insert(node *p, int data){
