@@ -38,10 +38,9 @@ int main(){
     a.insert(11);
     a.insert(4);
     a.insert(3);
-    a.insert(12);
-    a.insert(2);
+ //   a.insert(12);
     a.display(a.root);
-    a.deleteN(a.root, 3);
+    a.deleteN(a.root, 8);
     cout << "After Deletion" << endl;
     a.display(a.root);
     return 0;
@@ -54,9 +53,73 @@ node *rbTree::deleteN(node *p, int key){
     if(p->left == NULL && p->right == NULL && p->data == key){
         if(root == p)
             root = NULL;
+        /*if(p->color == 0){
+            node *sibling;
+            if(o->left == p)
+                sibling = o->right;
+            else
+                sibling = o->left;
+            if(sibling->color == 0){
+                if((sibling->left == NULL || sibling->left->color == 0) 
+                    && (sibling->right == NULL || sibling->right->color == 0)){
+                    sibling->color = !sibling->color;
+                    o->color = !o->color;
+                }else{
+                    if(sibling->data > p->data){
+                        if(sibling->right != NULL){
+                            
+                        }else{
+                            rlRotate(o);
+                        }
+                    }else{
+                        if(sibling->left != NULL){
+                            llRotate(o);
+                        }else{
+                            lrRotate(o);
+                        }
+                    }
+                }
+            }else{
+                if(sibling->data > p->data){
+                    if(sibling->right != NULL){
+                    }else{
+                    }
+                }else{
+                    if(sibling->left != NULL){
+                    }else{
+                    }
+                }
+            }
+        }*/
+
         delete p;
         return NULL;
-        
+    }
+
+    if((p->left->data == key && p->left->color == 0) && 
+        (p->left->left == NULL && p->left->right == NULL)){
+        if(p->right->color == 0){
+            if((p->right->left == NULL || p->right->left->color == 0) 
+                && (p->right->right == NULL || p->right->right->color == 0)){
+                p->color = !p->color;
+                p->right->color = !p->right->color;
+            }else{
+                if(p->right->right){
+                    node *rr = p->right;
+                    rr->left = p;
+                    p = rr;
+                    p->left = NULL;
+                    rr->color = 0;
+                    rr->left->color = 1;
+                    rr->right->color = 1;
+                }else{
+                    return rlRotate(p);
+                }
+            }
+        }
+
+
+
     }
 
     if(key < p->data)
