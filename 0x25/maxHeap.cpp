@@ -10,6 +10,7 @@ class maxHeap{
     void insert(int n); 
     void display();
     int deleteN();
+    void heapifyMin();
 };
 
 maxHeap::maxHeap(int max){
@@ -62,7 +63,25 @@ int maxHeap::deleteN(){
     }
     data[size--] = x;
     return x;
-    
+}
+
+void maxHeap::heapifyMin(){
+    for(int i = (size+1)/2 - 1; i >= 0; i--){
+        int j = 2 * i + 1;
+        while(j < size+1){
+            if(j < size && data[j] > data[j+1])
+                j = j+1;
+
+            if(data[i] > data[j]){
+                int temp = data[i];
+                data[i] = data[j];
+                data[j] = temp;
+                i = j;
+                j = 2 * i + 1;
+            }else
+                break;
+        }
+    }
 }
 
 int main(){
@@ -74,13 +93,7 @@ int main(){
     m.insert(9);
     m.insert(11);
     m.display();
-    m.deleteN();
-    m.deleteN();
-    m.deleteN();
-    m.deleteN();
-    m.deleteN();
+    m.heapifyMin();
     m.display();
-    for(int i = 1; i <= 5; i++)
-        cout << m.data[m.size+i] << endl;
-
+    return 0;
 }
